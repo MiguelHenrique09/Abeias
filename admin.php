@@ -5,7 +5,7 @@
   <meta name="viewport" content="width=device-width,initial-scale=1">
   <title>Admin — Abeias Burguer</title>
 
-  <!-- NOVO CSS -->
+
   <style>
     :root {
       --primary:#E06A24;
@@ -193,11 +193,11 @@
   <section class="panel" id="produtos">
     <h2>Produtos</h2>
 
-    <div class="form-row">
+    <form class="form-row" method="post">
       <input id="nomeProduto" placeholder="Produto">
       <input id="precoProduto" type="number" placeholder="Preço" step="0.01">
       <button class="btn">Adicionar</button>
-    </div>
+  </form>
 
     <div class="table-box">
       <table>
