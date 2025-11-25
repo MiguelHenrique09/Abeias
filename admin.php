@@ -1,5 +1,6 @@
 
 
+
 <!doctype html>
 <html lang="pt-BR">
 <head>
@@ -196,8 +197,9 @@
     <h2>Produtos</h2>
 
     <form class="form-row" method="post">
-      <input id="nomeProduto" placeholder="Produto">
-      <input id="precoProduto" type="number" placeholder="Preço" step="0.01">
+      <input id="nomeProduto" name="nomeProduto" placeholder="Produto">
+      <input id="precoProduto" type="text" name="precoProduto" placeholder="Preço" step="0.01"> 
+       <input id="descricaoProduto" name="descricaoProduto" type="text" placeholder="Descrição">
       <button class="btn">Adicionar</button>
   </form>
 
@@ -207,6 +209,7 @@
           <tr>
             <th>Produto</th>
             <th>Preço</th>
+            <th>Descrição</th>
           </tr>
         </thead>
         <tbody id="listaProdutos"></tbody>
@@ -220,7 +223,9 @@
 <script>
   // Troca abas
   const tabButtons = document.querySelectorAll('.tab-btn');
+  const preco = document.querySelectorAll('#precoProduto').value;
   const panels = document.querySelectorAll('.panel');
+
 
   tabButtons.forEach(btn => {
     btn.addEventListener("click", () => {
@@ -231,22 +236,35 @@
       document.getElementById(btn.dataset.tab).classList.add("active");
     });
   });
+  
 
- 
 </script>
 
 </body>
 </html>
-<?php  
+<?php
+    include 'conecta.php';
 
 
 
+    
+    $nomeProduto= $_POST['nomeProduto'] ?? '';
+    $preco = (float)$_POST['precoProduto'] ?? '';  
+    $desc = $_POST['descricaoProduto'] ?? '';
+   
+    //sql para inserir no banco
+    $sql = "INSERT INTO produto (nome_produto,descricao,preco_atual)
+            VALUES ('$nomeProduto', '$desc', '$preco')";
 
-
-
-
+    if (mysqli_query($conexao, $sql)) {
+        $msg = "Novo registro criado";
+    } else {
+        $msg = "Erro: " . $sql . "<br>" . mysqli_error($conexao);
+    }
+echo $msg;
+    mysqli_close($conexao);
 ?>
 
 
 
->>>>>>> Miguel
+

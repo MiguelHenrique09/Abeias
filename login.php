@@ -1,5 +1,5 @@
 <?php
-// Constantes do login
+// Constantes do login de admin
 define("miguelifmg24@gmail.com", "777");
 define("arthurrr778@gmail.com", "777");
 
