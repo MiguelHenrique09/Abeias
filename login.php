@@ -1,31 +1,31 @@
-<?php
-// Constantes do login de admin
-define("miguelifmg24@gmail.com", "777");
-define("arthurrr778@gmail.com", "777");
 
+ <?php
+                // Constantes do login de admin
+                define("miguelifmg24@gmail.com", "777");
+                define("arthurrr778@gmail.com", "777");
 
-$mensagem = "";
+                    $mensagem = "";
+            
 
-// Se o formulário foi enviado:
-if (isset($_POST["enviar"]) ) {
+                // Se o formulário foi enviado:
+                if (isset($_POST["enviar"]) ) {
+              
+                $email = $_POST["email"] ?? "";
+                $senha = $_POST["senha"] ?? "";
 
-    $email = $_POST["email"] ?? "";
-    $senha = $_POST["senha"] ?? "";
+                if ($email == "miguelifmg24@gmail.com" && $senha == 777 || $email == "arthurrr778@gmail.com" && $senha == 777) {
+                $mensagem = " "; 
+                // Redireciona para a página de admin
+                header("Location: admin.php");
+                exit;
 
-    if ($email == "miguelifmg24@gmail.com" || $email == "arthurrr778@gmail.com" && $senha == 777) {
-       
-        // Redireciona para a página de admin
-      header("Location: admin.php");
-        exit;
-
-    } else {
-        $mensagem = "Email ou senha incorretos!";
+                } else {
+        $mensagem = "<div class='alert alert-danger mt-2'>Email ou senha incorretos!</div>";
     }
-}
-?>
 
-
-
+                }
+           
+                ?>
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
@@ -112,11 +112,16 @@ if (isset($_POST["enviar"]) ) {
 
             <button type="submit" class="btn btn-login w-100 mb-3" name ="enviar" href= "admin.php"
             >Entrar</button>
+            <?php
+    echo $mensagem; // ← exibe o alerta
+?>
+               
 
             <p class="text-center">
                 Não tem conta? <a href="cadastro.html">Cadastre-se aqui</a>
             </p>
         </form>
+       
 
     </div>
 

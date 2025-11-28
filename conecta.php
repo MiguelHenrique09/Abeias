@@ -1,7 +1,7 @@
 <?php
     $servidor   = "localhost:3306";
     $usuario    = "root";
-    $senha      = "root";
+    $senha      = "Mhs2009.";
     $nome_bd    = "cardapiovirtual";
 
     //cria a conexão
@@ -11,5 +11,5 @@
     if (!$conexao) {
     die("Conexão falhou: " . mysqli_connect_error());
     }
-    //echo "Conectado!"; //debug
+   // echo "Conectado!"; //debug
 ?>

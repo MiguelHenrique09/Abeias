@@ -1,270 +1,108 @@
-
-
-
 <!doctype html>
 <html lang="pt-BR">
 <head>
   <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width,initial-scale=1">
   <title>Admin — Abeias Burguer</title>
-
 
   <style>
     :root {
-      --primary:#E06A24;
       --bg:#06092a;
-      --muted:#f0f0f0;
-      --card:rgba(255,255,255,0.05);
+      --primary:#E06A24;
+      --primary-hover:#ff7f3a;
+      --text:#ffffff;
+    }
+
+    * {
+      margin:0;
+      padding:0;
+      box-sizing:border-box;
     }
 
     body {
-      margin:0;
       font-family:Arial, sans-serif;
       background:var(--bg);
-      color:var(--muted);
-      padding:15px;
-    }
-
-    .container {
-      max-width:900px;
-      margin:auto;
-    }
-
-    /* ================= HEADER ================= */
-    header {
-      margin-bottom:20px;
-    }
-
-    .brand {
+      color:var(--text);
+      height:100vh;
+      width:100vw;
       display:flex;
-      align-items:center;
-      gap:12px;
-    }
-
-    .logo {
-      width:50px;
-      height:50px;
-      background:var(--primary);
-      border-radius:10px;
-      display:flex;
-      align-items:center;
+      flex-direction:column;
       justify-content:center;
-      font-weight:bold;
-      color:var(--bg);
-      font-size:20px;
+      align-items:center;
+      overflow:hidden;
     }
 
-    /* ================= MENU DE ABAS ================= */
-    .tabs {
+    h1 {
+      font-size:38px;
+      font-weight:700;
+      margin-bottom:40px;
+      text-transform:uppercase;
+      letter-spacing:2px;
+    }
+
+    .buttons {
       display:flex;
-      gap:10px;
-      margin-bottom:20px;
-      flex-wrap:wrap;
-    }
-
-    .tab-btn {
-      background:transparent;
-      border:1px solid rgba(255,255,255,0.3);
-      padding:10px 18px;
-      border-radius:8px;
-      color:var(--muted);
-      cursor:pointer;
-    }
-
-    .tab-btn.active {
-      background:var(--primary);
-      color:var(--bg);
-      font-weight:bold;
-      border:0;
-    }
-
-    /* ================= PAINÉIS ================= */
-    .panel {
-      display:none;
-      background:var(--card);
-      padding:20px;
-      border-radius:10px;
-    }
-
-    .panel.active {
-      display:block;
-    }
-
-    /* ================= FORMULÁRIOS ================= */
-    .form-row {
-      display:flex;
-      gap:10px;
-      margin-bottom:15px;
-      flex-wrap:wrap;
-    }
-
-    .form-row input {
-      padding:10px;
-      border:none;
-      border-radius:6px;
-      flex:1;
-      min-width:180px;
-    }
-
-    .btn {
-      background:var(--primary);
-      border:none;
-      color:var(--bg);
-      padding:10px 18px;
-      border-radius:8px;
-      cursor:pointer;
-      font-weight:bold;
-    }
-
-    .btn:active {
-      transform:scale(0.95);
-    }
-
-    /* ================= TABELAS ================= */
-    .table-box {
-      overflow-x:auto;
-      margin-top:10px;
-    }
-
-    table {
+      flex-direction:column;
+      gap:25px;
       width:100%;
-      border-collapse:collapse;
-      min-width:450px;
+      max-width:500px;
+      padding:0 20px;
     }
 
-    th, td {
-      padding:12px;
-      border-bottom:1px solid rgba(255,255,255,0.1);
+    .btn-link {
+      display:flex;
+      justify-content:center;
+      align-items:center;
+      background:var(--primary);
+      padding:20px;
+      border-radius:14px;
+      color:var(--bg);
+      text-decoration:none;
+      font-size:22px;
+      font-weight:bold;
+      width:100%;
+      transition:.2s;
+      box-shadow:0 6px 20px rgba(0,0,0,0.4);
     }
 
-    /* ================= RESPONSIVIDADE EXTRA ================= */
-    @media (max-width:600px) {
-      h1 { font-size:20px; }
-      table { font-size:14px; }
-      .btn { width:100%; }
+    .btn-link:hover {
+      background:var(--primary-hover);
+      transform:translateY(-4px);
+    }
+
+    .btn-link:active {
+      transform:scale(.97);
+    }
+       .back-btn{
+      display:inline-block;
+      margin-bottom:25px;
+      padding:12px 18px;
+      background:var(--primary);
+      color:var(--bg);
+      border-radius:10px;
+      text-decoration:none;
+      font-weight:bold;
+      transition:.2s;
     }
   </style>
 
 </head>
 
 <body>
-
 <div class="container">
-
-  <!-- HEADER -->
-  <header>
-    <div class="brand">
-      <div class="logo">AB</div>
-      <div>
-        <h1>Setor Administrativo</h1>
-      </div>
-    </div>
-  </header>
-
-  <!-- NAV -->
-  <div class="tabs">
-    <button class="tab-btn active" data-tab="pedidos">Ver pedidos</button>
-    <button class="tab-btn" data-tab="produtos">Gerenciar produtos</button>
-  </div>
-
-  <!-- ================= PAINEL PEDIDOS ================= -->
-  <section class="panel active" id="pedidos">
-    <h2>Pedidos</h2>
-
-    <form method="post">
-      <div class="form-row">
-        <input id="dataPedido" placeholder="dd/mm/aaaa">
-        <button type="submit" class="btn" name="enviar">Enviar</button>
-      </div>
-    </form>
-
-    <div class="table-box">
-      <table>
-        <thead>
-          <tr>
-            <th>ID</th>
-            <th>Cliente</th>
-            <th>Total</th>
-          </tr>
-        </thead>
-        <tbody id="listaPedidos"></tbody>
-      </table>
-    </div>
-  </section>
-
-  <!-- ================= PAINEL PRODUTOS ================= -->
-  <section class="panel" id="produtos">
-    <h2>Produtos</h2>
-
-    <form class="form-row" method="post">
-      <input id="nomeProduto" name="nomeProduto" placeholder="Produto">
-      <input id="precoProduto" type="text" name="precoProduto" placeholder="Preço" step="0.01"> 
-       <input id="descricaoProduto" name="descricaoProduto" type="text" placeholder="Descrição">
-      <button class="btn">Adicionar</button>
-  </form>
-
-    <div class="table-box">
-      <table>
-        <thead>
-          <tr>
-            <th>Produto</th>
-            <th>Preço</th>
-            <th>Descrição</th>
-          </tr>
-        </thead>
-        <tbody id="listaProdutos"></tbody>
-      </table>
-    </div>
-  </section>
-
+  <h1>Painel Administrativo</h1>
+   <a class="back-btn" href="login.php">Voltar</a>
 </div>
+  <div class="buttons">
+    
+   
 
-<!-- ================= JS ================= -->
-<script>
-  // Troca abas
-  const tabButtons = document.querySelectorAll('.tab-btn');
-  const preco = document.querySelectorAll('#precoProduto').value;
-  const panels = document.querySelectorAll('.panel');
-
-
-  tabButtons.forEach(btn => {
-    btn.addEventListener("click", () => {
-      tabButtons.forEach(b => b.classList.remove("active"));
-      panels.forEach(p => p.classList.remove("active"));
-
-      btn.classList.add("active");
-      document.getElementById(btn.dataset.tab).classList.add("active");
-    });
-  });
-  
-
-</script>
+    <a href="gerenciaProdutos.php" class="btn-link">
+      Gerenciar Pedidos
+  </a>
+    <a href="gerenciaProdutos.php" class="btn-link">
+      Gerenciar Produtos
+    </a>
+  </div>
 
 </body>
 </html>
-<?php
-    include 'conecta.php';
-
-
-
-    
-    $nomeProduto= $_POST['nomeProduto'] ?? '';
-    $preco = (float)$_POST['precoProduto'] ?? '';  
-    $desc = $_POST['descricaoProduto'] ?? '';
-   
-    //sql para inserir no banco
-    $sql = "INSERT INTO produto (nome_produto,descricao,preco_atual)
-            VALUES ('$nomeProduto', '$desc', '$preco')";
-
-    if (mysqli_query($conexao, $sql)) {
-        $msg = "Novo registro criado";
-    } else {
-        $msg = "Erro: " . $sql . "<br>" . mysqli_error($conexao);
-    }
-echo $msg;
-    mysqli_close($conexao);
-?>
-
-
-
-
