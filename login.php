@@ -99,7 +99,7 @@
     <div class="login-card">
         <h1 class="login-title">Entrar no Abeias Burguer</h1>
 
-        <form method="POST">
+        <form method="POST" action="processa_login.php">
             <div class="mb-3">
                 <label class="form-label">E-mail</label>
                 <input type="email" class="form-control" placeholder="Digite seu e-mail" name="email">
