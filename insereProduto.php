@@ -174,9 +174,9 @@
     <h2>Produtos</h2>
 
     <form class="form-row" method="post">
-      <input id="nomeProduto" name="nomeProduto" placeholder="Produto">
-      <input id="precoProduto" type="text" name="precoProduto" placeholder="Preço" step="0.01"> 
-       <input id="descricaoProduto" name="descricaoProduto" type="text" placeholder="Descrição">
+      <input id="nomeProduto" name="nomeProduto" placeholder="Produto" required>
+      <input id="precoProduto" type="text" name="precoProduto" placeholder="Preço" step="0.01" required> 
+       <input id="descricaoProduto" name="descricaoProduto" type="text" placeholder="Descrição" required>
        
       <button class="btn" name = "inseri"">Adicionar</button>
   </form>
