@@ -2,20 +2,18 @@
 session_start();
 include("bd/conecta.php");
 
-if (!isset($_SESSION["logado"])) {
-    die("Uai, ocê precisa logar primeiro!");
-}
+
 
 $idCliente = $_SESSION["usuario_id"];
 $produtos = $_POST["produto"] ?? [];
-
+$obs= $_POST["observacoes"];
 if (!$produtos) {
     die("Nenhum produto enviado.");
 }
 
 // cria pedido
-$sqlPedido = "INSERT INTO pedido (id_cliente, data_hora_pedido, statusPedido, valor_total)
-              VALUES ($idCliente, NOW(), 'preparando', 0)";
+$sqlPedido = "INSERT INTO pedido (id_cliente, data_hora_pedido, statusPedido, valor_total,observacoes)
+              VALUES ($idCliente, NOW(), 'preparando', 0,' ')";
 
 
 mysqli_query($conexao, $sqlPedido);
@@ -32,14 +30,15 @@ foreach ($produtos as $idProduto => $qtd) {
         $sqlP = "SELECT preco_atual FROM produto WHERE idProduto = $idProduto";
         $res = mysqli_query($conexao, $sqlP);
         $prod = mysqli_fetch_assoc($res);
-
+        
         $preco = $prod["preco_atual"];
         $subtotal = $preco * $qtd;
         $total += $subtotal;
+        $status = "confirmando";
 
         // insere produto_pedido
-        $sqlItem = "INSERT INTO pedido (codigo_pedido, id_cliente, data_hora_pedido, prazo_estimado, valor_total, statusPedido, observacoes)
-VALUES (NULL, '$id_cliente', NOW(), '$prazo', '$valor', '$status', '$obs');
+        $sqlItem = "INSERT INTO pedido ( id_cliente, data_hora_pedido, valor_total, statusPedido, observacoes)
+VALUES ( '$idCliente', NOW(), '$total', '$status', '$obs');
 ";
 
         mysqli_query($conexao, $sqlItem);

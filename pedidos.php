@@ -2,10 +2,7 @@
 session_start();
 include("bd/conecta.php");
 
-// garante login
-if (!isset($_SESSION["logado"])) {
-    die("Uai, ocê precisa logar primeiro, sô!");
-}
+
 
 $idCliente = $_SESSION["usuario_id"];
 
@@ -38,6 +35,10 @@ $produtos = mysqli_query($conexao, $sql);
 
         Quantidade: 
         <input type="number" name="produto[<?= $p['idProduto'] ?>]" min="0" value="0">
+        Observações : 
+        <input type="text" name="observacoes" placeholder="Faça suas observações">
+
+        
     </div>
 <?php endwhile; ?>
 
