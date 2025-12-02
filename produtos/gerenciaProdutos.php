@@ -2,92 +2,10 @@
 <html lang="pt-BR">
 <head>
   <meta charset="utf-8">
-<title>Lista de Produtos — Abeias Burguer</title>
+  <title>Gerenciar Produtos — Abeias Burguer</title>
 
   <style>
-    .container{
-      width:100%;
-      max-width:900px;
-    }
-
-    :root {
-      --bg:#06092a;
-      --primary:#E06A24;
-      --primary-hover:#ff7f3a;
-      --text:#ffffff;
-    }
-
-    body {
-      font-family:Arial, sans-serif;
-      background:var(--bg);
-      color:var(--text);
-      display:flex;
-      justify-content:center;
-      align-items:center;
-    }
-
-    h1 {
-      font-size:38px;
-      font-weight:700;
-      margin-bottom:30px;
-      text-transform:uppercase;
-      letter-spacing:2px;
-    }
-
-    .back-btn{
-      display:inline-block;
-      margin-bottom:25px;
-      padding:12px 18px;
-      background:var(--primary);
-      color:var(--bg);
-      border-radius:10px;
-      text-decoration:none;
-      font-weight:bold;
-      transition:.2s;
-    }
-
-    .btn{
-      padding:10px 18px;
-      border:none;
-      background:var(--primary);
-      color:var(--bg);
-      font-weight:bold;
-      border-radius:8px;
-      cursor:pointer;
-    }
-
-    .btn:hover{
-      background:var(--primary-hover);
-    }
-
-    table {
-      width:90%;
-      max-width:900px;
-      border-collapse:collapse;
-      background:#fff;
-      color:#000;
-      border-radius:10px;
-      overflow:hidden;
-      margin-top:20px;
-    }
-
-    th, td {
-      padding:15px;
-      font-size:18px;
-      text-align:left;
-    }
-
-    th {
-      background:var(--primary);
-      color:var(--bg);
-      font-size:20px;
-    }
-
-    tr:nth-child(even) {
-      background:#eee;
-    }
-
-    /* ===== MODAL ===== */
+     /* ===== MODAL ===== */
     .modal-bg{
       position:fixed;
       inset:0;
@@ -129,15 +47,163 @@
     .nao{
       background:#ccc;
     }
-  </style>
+    :root {
+      --bg:#06092a;
+      --primary:#E06A24;
+      --primary-hover:#ff7f3a;
+      --text:#ffffff;
+      --card:rgba(255,255,255,0.07);
+    }
 
+    *{
+      margin:0; padding:0; box-sizing:border-box;
+    }
+
+    body{
+      background:var(--bg);
+      color:var(--text);
+      font-family:Arial, sans-serif;
+      padding:40px 20px;
+      min-height:100vh;
+      display:flex;
+      justify-content:center;
+    }
+
+    .container{
+      width:100%;
+      max-width:900px;
+    }
+
+    /* Botão voltar */
+    .back-btn{
+      display:inline-block;
+      margin-bottom:25px;
+      padding:12px 18px;
+      background:var(--primary);
+      color:var(--bg);
+      border-radius:10px;
+      text-decoration:none;
+      font-weight:bold;
+      transition:.2s;
+    }
+    .back-btn:hover{
+      background:var(--primary-hover);
+      transform:translateY(-2px);
+    }
+
+    h1{
+      margin-bottom:25px;
+      font-size:34px;
+      text-align:center;
+    }
+
+  /* ABAS */
+.tabs{
+  display:flex;
+  flex-direction:column;
+  gap:12px;
+  margin-bottom:20px;
+}
+
+.tabs .btn{
+  width:100%;
+  padding:18px;
+  font-size:18px;
+  background:var(--primary);
+  border:none;
+  border-radius:10px;
+  cursor:pointer;
+  color:var(--bg);
+  font-weight:bold;
+  text-align:center;
+  transition:.2s;
+  display:block;
+}
+
+.tabs .btn:hover{
+  background:var(--primary-hover);
+  transform:translateY(-3px);
+}
+
+    /* PAINÉIS */
+    .panel{
+      display:none;
+      background:var(--card);
+      padding:25px;
+      border-radius:12px;
+      box-shadow:0 6px 20px rgba(0,0,0,0.4);
+    }
+
+    .panel.active{
+      display:block;
+    }
+
+    /* FORMULÁRIO */
+    .form-row{
+      display:flex;
+      flex-wrap:wrap;
+      gap:12px;
+      margin-bottom:20px;
+    }
+    .form-row input{
+      flex:1;
+      padding:12px;
+      border:none;
+      border-radius:8px;
+    }
+
+    .btn{
+      background:var(--primary);
+      color:var(--bg);
+      padding:12px 18px;
+      border:none;
+      border-radius:8px;
+      cursor:pointer;
+      font-weight:bold;
+      transition:.2s;
+    }
+    .btn:hover{
+      background:var(--primary-hover);
+      transform:translateY(-2px);
+    }
+
+    /* TABELA */
+    table{
+      width:100%;
+      border-collapse:collapse;
+      margin-top:10px;
+    }
+
+    th, td{
+      padding:12px;
+      border-bottom:1px solid rgba(255,255,255,0.1);
+    }
+
+    th{
+      background:rgba(255,255,255,0.1);
+      text-align:left;
+    }
+
+  </style>
 </head>
 
 <body>
 
 <div class="container">
 
-  <a class="back-btn" href="gerenciaProdutos.php">Voltar</a>
+  <a class="back-btn" href="../admin.php"> Voltar</a>
+
+  <h1>Gerenciar Produtos</h1>
+
+  <!-- ABAS -->
+  <div class="tabs">
+    
+<button class="btn" onclick="window.location='insereProduto.php'">Inserir Produtos</button>    
+
+</div>  
+
+<div class="container">
+
 
   <h1>Lista de Produtos</h1>
 
@@ -155,7 +221,7 @@
     <tbody>
 
       <?php
-        include 'conecta.php';
+        include __DIR__ . '/../bd/conecta.php';
 
         $sql = "SELECT nome_produto, preco_atual, descricao FROM produto";
         $resultado = mysqli_query($conexao, $sql);
@@ -232,13 +298,13 @@
 // ===== PROCESSANDO A EXCLUSÃO =====
 if (isset($_POST["excluir"])) {
 
-  include 'conecta.php';
+        include __DIR__ . '/../bd/conecta.php';
   $nome = $_POST["produto"];
 
   $sql = "DELETE FROM produto WHERE nome_produto = '$nome'";
 
   if (mysqli_query($conexao, $sql)) {
-    echo "<script>alert('Produto excluído com sucesso!'); window.location.href='listaProduto.php';</script>";
+    echo "<script>alert('Produto excluído com sucesso!'); window.location.href='gerenciaProdutos.php';</script>";
   } else {
     echo "<script>alert('Erro ao excluir!');</script>";
   }
@@ -251,12 +317,14 @@ if (isset($_POST["excluir"])) {
 // ===== PROCESSANDO A EDIÇÃO =====
 if (isset($_POST["editar"])) {
 
-  include 'conecta.php';
+        include __DIR__ . '/../bd/conecta.php';
  $msg =" ";
   $nomeAntigo   = $_POST['nomeAntigo'];
   $nomeProduto  = $_POST['novoNome'] ?? '';
-  $preco        = (float)($_POST['novoPreco'] ?? 0);
-  $desc         = $_POST['novaDesc'] ?? '';
+  $preco  = ($_POST['novoPreco'] ?? 0);
+  $preco = str_replace(',', '.', $preco);   
+  $preco = (float)$preco;    
+  $desc = $_POST['novaDesc'] ?? '';
 
   if (
     isset($nomeProduto) &&
@@ -268,7 +336,6 @@ if (isset($_POST["editar"])) {
 
 $nomeEscapado = mysqli_real_escape_string($conexao, $nomeProduto);
 
-// Verifica se existe um produto com esse nome que NÃO seja o atual
 $checkSql = "SELECT nome_produto FROM produto 
              WHERE nome_produto = '$nomeEscapado' 
              AND nome_produto != '$nomeAntigo' 
@@ -290,7 +357,7 @@ if (mysqli_num_rows($checkResult) > 0) {
 
         echo "<script>
                 alert('Produto editado com sucesso!');
-                window.location.href = 'listaProduto.php';
+                window.location.href = 'gerenciaProdutos.php';
               </script>";
         exit;
 
@@ -329,27 +396,8 @@ echo $msg;
   }
 </script>
 
+  </div>
+ </div>
+  
 </body>
 </html>
-
-
-
-
-
-
-
-
-
-
-
- 
-
-
-
-
-
-
-
-
-
-

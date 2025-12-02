@@ -3,7 +3,7 @@
 
 <head>
     <meta charset="utf-8">
-    <title>Fale Conosco - Abeias Burguer</title>
+    <title>Cardápio -Abeias Burguer</title>
     <meta content="width=device-width, initial-scale=1.0" name="viewport">
     <meta content="" name="keywords">
     <meta content="" name="description">
@@ -30,9 +30,33 @@
 
     <!-- Template Stylesheet -->
     <link href="style.css" rel="stylesheet">
+
+
+    <style>.produto-titulo {
+    font-size: 1.35rem;
+    font-weight: 700;
+    color: #0a1435;
+}
+
+.produto-preco {
+    font-size: 1.25rem;
+    font-weight: 700;
+    color: #ff9900 !important;
+}
+
+.produto-desc {
+    font-size: 0.95rem;
+    line-height: 1.4rem;
+    color: #444;
+}
+
+.border-bottom {
+    border-color: #ddd !important;
+}
+</style>
 </head>
 
-<body class="fundo" >
+<body class="fundo">
     <div class="container-xxl bg-white p-0">
         <!-- Spinner Start -->
         <div id="spinner" class="show bg-white position-fixed translate-middle w-100 vh-100 top-50 start-50 d-flex align-items-center justify-content-center">
@@ -45,10 +69,10 @@
 
         <!-- Navbar & Hero Start -->
         <div class="container-xxl position-relative p-0">
-            <nav class="navbar navbar-expand-lg navbar-dark bg-dark px-4 px-lg-5 py-3 py-lg-0  fundoD1">
+            <nav class="navbar navbar-expand-lg navbar-dark bg-dark px-4 px-lg-5 py-3 py-lg-0">
                 <a href="index.html" class="navbar-brand p-0">
                     <h1 class="text-primary m-0">Abeias Burguer</h1>
-                    <!-- <img src="img/logo.png" alt="Logo"> -->
+                   
                 </a>
                 <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse">
                     <span class="fa fa-bars"></span>
@@ -56,13 +80,11 @@
                 <div class="collapse navbar-collapse" id="navbarCollapse">
                     <div class="navbar-nav ms-auto py-0 pe-4">
                         <a href="index.html" class="nav-item nav-link">Início</a>
-                
-                        <a href="cardapio.php" class="nav-item nav-link">Cardápio</a>
+                        <a href="cardapio.php" class="nav-item nav-link active">Cardápio</a>
                         <div class="nav-item dropdown">
-                        
-                        </div>
-                        <a href="contato.html" class="nav-item nav-link active">Fale Conosco</a>
-                        
+                            
+                    </div>
+                        <a href="contato.html" class="nav-item nav-link">Fale Conosco</a>
                     </div>
 
                 </div>
@@ -70,40 +92,79 @@
 
             <div class="container-xxl py-5 bg-dark hero-header mb-5">
                 <div class="container text-center my-5 pt-5 pb-4">
-                    <h1 class="display-3 text-white mb-3 animated slideInDown">Fale Conosco</h1>
+                    <h1 class="display-3 text-white mb-3 animated slideInDown">Cardápio Abeias</h1>
+                    <a href="cadastro.html" class="btn btn-primary py-2 px-4">Faça seu pedido</a>
                     <nav aria-label="breadcrumb">
-                        
+
                     </nav>
                 </div>
             </div>
         </div>
         <!-- Navbar & Hero End -->
 
+    <!-- itens -->
 
-        <!-- Contact Start -->
-        <div class="container-xxl py-5">
-            <div class="container">
-                <div class="text-center wow fadeInUp" data-wow-delay="0.1s">
-                    <h5 class="section-title ff-secondary text-center text-primary fw-normal">Abeias Burguer</h5>
-                    <h1 class="mb-5">Deixe sua menssagem/feedback</h1>
-                </div>
-                <div class="row g-4"  style="justify-content: center;align-items: center;display: flex;">
-                    
-                     <div class="col-md-4">
-                                <h5 class="section-title ff-secondary fw-normal text-start text-primary">Telefone</h5>
-                                <p><i class="fa fa-phone text-primary me-2"></i>37 91234-5678</i></p>
-                            </div>
-                            <div class="col-md-4">
-                                <h5 class="section-title ff-secondary fw-normal text-start text-primary">Email</h5>
-                                <p><i class="fa fa-envelope-open text-primary me-2"></i>abeiasburguer@gmail.com</p>
-                            </div>
+       
+        <?php 
+include 'bd/conecta.php';
 
-                </div>
+// Consulta produtos
+$sql = "SELECT * FROM produto ORDER BY nome_produto ASC";
+$resultado = mysqli_query($conexao, $sql);
+?>
+
+
+<div class="container-xxl py-5">
+    <div class="container">
+
+        <!-- Títulos -->
+        <div class="text-center wow fadeInUp" data-wow-delay="0.1s">
+            <h5 class="section-title ff-secondary text-center text-primary fw-normal">Abeias Burguer</h5>
+            <h1 class="mb-5">Nossos Produtos</h1>
+        </div>
+
+        <!-- Área dos produtos -->
+        <div class="tab-class text-center wow fadeInUp" data-wow-delay="0.1s">
+            <div class="row g-4">
+
+        <?php while ($p = mysqli_fetch_assoc($resultado)): ?>
+
+    <div class="col-lg-6">
+        <div class="d-flex align-items-center">
+
+            <div class="w-100 d-flex flex-column text-start ps-4">
+
+                <!-- NOME + PREÇO -->
+                <h5 class="d-flex justify-content-between border-bottom pb-2">
+                    <span><?php echo $p['nome_produto']; ?></span>
+                    <span class="text-primary">
+                        R$<?php echo number_format($p['preco_atual'], 2, ',', '.'); ?>
+                    </span>
+                </h5>
+
+                <!-- DESCRIÇÃO -->
+                <small class="fst-italic">
+                    <?php echo $p['descricao']; ?>
+                </small>
+
+            </div>
+
+        </div>
+    </div>
+
+<?php endwhile; ?>
+
+
+
             </div>
         </div>
-        <!-- Contact End -->
+    </div>
+</div>
 
 
+            </div>
+        </div>
+        <!-- Menu End -->
         <!-- Footer Start -->
         <div class="container-fluid bg-dark text-light footer pt-5 mt-5 wow fadeIn" data-wow-delay="0.1s">
             <div class="container py-5">
@@ -144,8 +205,6 @@
         </div>
         <!-- Footer End -->
 
-
-       
     </div>
 
     <!-- JavaScript Libraries -->
@@ -162,6 +221,8 @@
 
     <!-- Template Javascript -->
     <script src="js/main.js"></script>
+
+  
 </body>
 
 </html>

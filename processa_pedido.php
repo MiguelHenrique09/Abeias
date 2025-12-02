@@ -1,6 +1,6 @@
 <?php
 session_start();
-include("conecta.php");
+include("bd/conecta.php");
 
 if (!isset($_SESSION["logado"])) {
     die("Uai, ocê precisa logar primeiro!");

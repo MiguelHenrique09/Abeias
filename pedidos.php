@@ -1,6 +1,6 @@
 <?php
 session_start();
-include("conecta.php");
+include("bd/conecta.php");
 
 // garante login
 if (!isset($_SESSION["logado"])) {

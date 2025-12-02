@@ -181,17 +181,7 @@
       <button class="btn" name = "inseri"">Adicionar</button>
   </form>
 
-    <div class="table-box">
-      <table>
-        <thead>
-          <tr>
-            <th>Produto</th>
-            <th>Preço</th>
-            <th>Descrição</th>
-          </tr>
-        </thead>
-      </table>
-    </div>
+  
 
 </div>
 
@@ -219,12 +209,14 @@
 </body>
 </html>
 <?php
-include 'conecta.php';
+        include __DIR__ . '/../bd/conecta.php';
 
 if(isset($_POST["inseri"])){
 
     $nomeProduto = $_POST['nomeProduto'] ?? '';
-    $preco = (float)($_POST['precoProduto'] ?? 0);
+    $preco = ($_POST['precoProduto'] ?? 0);
+    $preco = str_replace(',', '.', $preco);   
+    $preco = (float)$preco;     
     $desc = $_POST['descricaoProduto'] ?? '';
 
     if(
@@ -233,29 +225,54 @@ if(isset($_POST["inseri"])){
         !empty(trim($_POST['nomeProduto'])) &&
          is_numeric($preco)
     ){
-
+             
 
         $nomeEscapado = mysqli_real_escape_string($conexao, $nomeProduto);
         $checkSql = "SELECT nome_produto FROM produto WHERE nome_produto = '$nomeEscapado' LIMIT 1";
         $checkResult = mysqli_query($conexao, $checkSql);
 
         if(mysqli_num_rows($checkResult) > 0){
-            echo "Esse produto já existe!";
+echo "
+<div style='
+    color:#E06A24;
+    margin:20px auto;
+    width:fit-content;
+    border-radius:8px;
+    font-size:22px;
+    font-weight:bold;
+'>
+   Esse produto já existe!
+</div>
+";
         } else {
             // insert no bd
             $sql = "INSERT INTO produto (nome_produto, descricao, preco_atual)
                     VALUES ('$nomeEscapado', '$desc', '$preco')";
 
             if(mysqli_query($conexao, $sql)){
-                echo "Novo produto criado com sucesso!";
-            } else {
-                echo "Erro ao inserir!";
+echo "
+<div style='
+    color:#E06A24;
+    margin:20px auto;
+    width:fit-content;
+    border-radius:8px;
+    font-size:22px;
+    font-weight:bold;
+'>Novo produto criado com sucesso!</div>";
+            } 
+            else {
+              echo "
+<div style='
+    color:#E06A24;
+    margin:20px auto;
+    width:fit-content;
+    border-radius:8px;
+    font-size:22px;
+    font-weight:bold;
+'>Novo produto criado com sucesso!</div>";
+            } 
             }
         }
-
-    } else {
-        echo "Erro: dados inválidos.";
-    }
 
 }
 

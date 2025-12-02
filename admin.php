@@ -83,6 +83,63 @@
       font-weight:bold;
       transition:.2s;
     }
+    .modal-bg{
+  position:fixed;
+  top:0;
+  left:0;
+  width:100%;
+  height:100%;
+  background:rgba(0,0,0,0.75);
+  display:none;
+  justify-content:center;
+  align-items:center;
+  z-index:9999;
+}
+
+.modal-box{
+  background:#fff;
+  color:#000;
+  border-radius:14px;
+  padding:30px;
+  width:90%;
+  max-width:420px;
+  text-align:center;
+  box-shadow:0 0 20px rgba(0,0,0,0.4);
+}
+
+.modal-buttons{
+  margin-top:25px;
+  display:flex;
+  justify-content:center;
+  gap:15px;
+}
+
+.modal-btn{
+  padding:10px 18px;
+  border:none;
+  border-radius:10px;
+  font-weight:bold;
+  cursor:pointer;
+  transition:.2s;
+}
+
+.modal-btn.sim{
+  background:var(--primary);
+  color:#fff;
+}
+
+.modal-btn.sim:hover{
+  background:var(--primary-hover);
+}
+
+.modal-btn.nao{
+  background:#ccc;
+}
+
+.modal-btn.nao:hover{
+  background:#bbb;
+}
+
   </style>
 
 </head>
@@ -90,19 +147,50 @@
 <body>
 <div class="container">
   <h1>Painel Administrativo</h1>
-   <a class="back-btn" href="login.php">Voltar</a>
+<a class="back-btn" href="#" id="openExitModal">Voltar</a>
 </div>
   <div class="buttons">
     
    
 
-    <a href="gerenciaProdutos.php" class="btn-link">
+    <a href="pedidos.php" class="btn-link">
       Gerenciar Pedidos
   </a>
-    <a href="gerenciaProdutos.php" class="btn-link">
+    <a href="produtos/gerenciaProdutos.php" class="btn-link">
       Gerenciar Produtos
     </a>
   </div>
+
+<!-- Modal de confirmação -->
+<div class="modal-bg" id="exitModal">
+  <div class="modal-box">
+    <h2>Tem certeza que deseja sair da aba administrativa?</h2>
+   
+
+    <div class="modal-buttons">
+      <button class="modal-btn sim" id="confirmExit">Sim, sair</button>
+      <button class="modal-btn nao" id="cancelExit">Cancelar</button>
+    </div>
+  </div>
+</div>
+<script>
+  const openModal = document.getElementById('openExitModal');
+  const modal = document.getElementById('exitModal');
+  const cancel = document.getElementById('cancelExit');
+  const confirmExit = document.getElementById('confirmExit');
+
+  openModal.addEventListener('click', () => {
+    modal.style.display = 'flex';
+  });
+
+  cancel.addEventListener('click', () => {
+    modal.style.display = 'none';
+  });
+
+  confirmExit.addEventListener('click', () => {
+    window.location.href = "login.php";
+  });
+</script>
 
 </body>
 </html>

@@ -1,5 +1,6 @@
 
  <?php
+ 
                 // Constantes do login de admin
                 define("miguelifmg24@gmail.com", "777");
                 define("arthurrr778@gmail.com", "777");
@@ -91,12 +92,38 @@
         a:hover{
             text-decoration: underline;
         }
+.page-container {
+    position: relative;
+    width: 100%;
+    max-width: 450px;
+}
 
+.back-btn{
+    position: absolute;
+    top: -60px;     /* move para cima */
+    left: 0;
+    padding: 8px 16px;
+    background:#E06A24;
+    color:#10183e;
+    font-weight:bold;
+    border-radius:8px;
+    text-decoration:none;
+    transition:0.3s;
+    box-shadow:0 3px 8px rgba(0,0,0,0.25);
+}
+
+.back-btn:hover{
+    transform:translateX(-3px);
+}
     </style>
 </head>
 <body>
-    
+<div class="page-container">
+
+    <a class="back-btn" href="cadastro.html"> Voltar</a>
     <div class="login-card">
+        
+
         <h1 class="login-title">Entrar no Abeias Burguer</h1>
 
         <form method="POST" action="processa_login.php">

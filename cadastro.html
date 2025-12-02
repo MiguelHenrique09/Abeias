@@ -69,12 +69,37 @@
         a:hover{
             text-decoration: underline;
         }
+.page-container {
+    position: relative;
+    width: 100%;
+    max-width: 450px;
+}
+
+.back-btn{
+    position: absolute;
+    top: -60px;     /* move para cima */
+    left: 0;
+    padding: 8px 16px;
+    background:#E06A24;
+    color:#10183e;
+    font-weight:bold;
+    border-radius:8px;
+    text-decoration:none;
+    transition:0.3s;
+    box-shadow:0 3px 8px rgba(0,0,0,0.25);
+}
+
+.back-btn:hover{
+    transform:translateX(-3px);
+}
 
     </style>
     </head>
     <body>
-
-        <div class="register-card">
+<div class="page-container">
+  <a class="back-btn" href="index.html"> Voltar</a>
+        <div class="register-card"> 
+           
             <h1 class="register-title">Criar Conta</h1>
 
             <form method="post" action="cadastra.php">
@@ -111,7 +136,7 @@
 
 
         </div>
-
+</div>
     </body>
 </html>
 
