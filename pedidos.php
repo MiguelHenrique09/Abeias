@@ -35,12 +35,14 @@ $produtos = mysqli_query($conexao, $sql);
 
         Quantidade: 
         <input type="number" name="produto[<?= $p['idProduto'] ?>]" min="0" value="0">
-        Observações : 
-        <input type="text" name="observacoes" placeholder="Faça suas observações">
+     
 
         
     </div>
 <?php endwhile; ?>
+
+  Observações : 
+        <input type="text" name="observacoes" placeholder="Faça suas observações">
 
 <button type="submit">Enviar Pedido</button>
 
