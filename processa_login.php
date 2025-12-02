@@ -12,7 +12,7 @@ $admins = [
 // ====================
 // CONEXÃO COM BANCO
 // ====================
-$conn = new mysqli("localhost", "root", "Mhs2009.", "cardapiovirtual");
+$conn = new mysqli("localhost", "root", "root", "cardapiovirtual");
 if ($conn->connect_error) {
     die("Erro na conexão: " . $conn->connect_error);
 }
@@ -64,12 +64,13 @@ if ($result->num_rows > 0) {
         exit;
 
     } else {
-        echo "<div class='alert alert-danger'>Senha incorreta!</div>";
+     
+             echo "<script>alert('Senha incorreta !!!'); window.location.href='login.php';</script>";
         exit;
     }
 
 } else {
-    echo "<div class='alert alert-danger'>Email não encontrado!</div>";
+       echo "<script>alert('Email inexistente!!!'); window.location.href='login.php';</script>";
     exit;
 }
 

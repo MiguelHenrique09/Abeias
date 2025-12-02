@@ -1,7 +1,7 @@
 <?php
     $servidor   = "localhost";
     $usuario    = "root";
-    $senha_bd      = "Mhs2009.";
+    $senha_bd      = "root";
     $nome_bd    = "cardapiovirtual";
 
     //cria a conexão
