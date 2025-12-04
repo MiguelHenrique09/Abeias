@@ -108,15 +108,12 @@
 
 <body>
 <div class="container">
-s
-
-
 
 <!-- ===== MODAL ===== -->
 <div class="modal-bg">
   <div class="modal-box">
     <h2>Tem certeza?</h2>
-    <p>Deseja excluir o produto <strong id="produtoNome"></strong>?</p>
+    <p>Deseja excluir o Cliente <strong id="clienteNome"></strong>?</p>
 
     <div class="modal-buttons">
       <form method="post" >
@@ -129,33 +126,21 @@ s
   </div>
 </div>
 <?php
-include "../bd/conecta.php";
+include '../bd/conecta.php';
+if(isset($_POST["excluir"])){
+$nome = $_POST["cliente"];
 
-$idProduto = $_POST["nomeProduto"] ?? 0;
+$sql = "DELETE FROM cliente WHERE nome_cliente = '$nome'";
 
-$sqlCheck = "SELECT COUNT(*) AS qtd FROM produto_pedido WHERE produto_nomeProduto = $nomeProduto";
-$result = mysqli_query($conexao, $sqlCheck);
-$row = mysqli_fetch_assoc($result);
-
-if ($row["qtd"] > 0) {
-
-    echo "<script>
-        alert('Este produto não pode ser excluído porque já foi vendido em um ou mais pedidos.');
-        window.location.href='gerenciaProdutos.php';
-    </script>";
-    exit;
+if(mysqli_query($conexao, $sql)){
+    echo "Cliente excluído com sucesso!";
+} else {
+    echo "Erro ao excluir.";
 }
-
-// 2) Pode excluir sem quebrar o histórico
-$sqlDelete = "DELETE FROM produto WHERE nomeProduto = $nomeProduto";
-mysqli_query($conexao, $sqlDelete);
-
-echo "<script>
-    alert('Produto excluído com sucesso!');
-    window.location.href='gerenciaProdutos.php';
-</script>";
-
+}
+mysqli_close($conexao);
 ?>
+
 
 
 </div>

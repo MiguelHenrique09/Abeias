@@ -1,5 +1,5 @@
 <?php 
-include "bd/conecta.php";
+include "../bd/conecta.php";
 
 // receber dados do formulário
 $email = $_POST['email'];

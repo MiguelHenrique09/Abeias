@@ -12,7 +12,7 @@ $admins = [
 // ====================
 // CONEXÃO COM BANCO
 // ====================
-$conn = new mysqli("localhost", "root", "root", "cardapiovirtual");
+$conn = new mysqli("localhost", "root", "Mhs2009.", "cardapiovirtual");
 if ($conn->connect_error) {
     die("Erro na conexão: " . $conn->connect_error);
 }
@@ -37,7 +37,7 @@ if (array_key_exists($email, $admins) && $admins[$email] === $senha) {
     $_SESSION['admin_logado'] = true;
     $_SESSION['email'] = $email;
 
-    header("Location: admin.php");
+    header("Location: ../admin.php");
     exit;
 }
 
@@ -60,7 +60,7 @@ if ($result->num_rows > 0) {
         $_SESSION['usuario_id'] = $usuario['idCliente'];
         $_SESSION['usuario_email'] = $usuario['username'];
 
-        header("Location: pedidos.php");
+        header("Location: ../Pedido/pedidos.php");
         exit;
 
     } else {

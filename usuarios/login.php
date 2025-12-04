@@ -17,8 +17,8 @@
                 if ($email == "miguelifmg24@gmail.com" && $senha == 777 || $email == "arthurrr778@gmail.com" && $senha == 777) {
                 $mensagem = " "; 
                 // Redireciona para a página de admin
-                header("Location: admin.php");
-                exit;
+header("Location: ../admin.php");           
+     exit;
 
                 } else {
         $mensagem = "<div class='alert alert-danger mt-2'>Email ou senha incorretos!</div>";
@@ -137,7 +137,7 @@
                 <input type="password" class="form-control" placeholder="Digite sua senha" name ="senha">
             </div>
 
-            <button type="submit" class="btn btn-login w-100 mb-3" name ="enviar" href= "admin.php"
+            <button type="submit" class="btn btn-login w-100 mb-3" name ="enviar" href= "../admin.php"
             >Entrar</button>
             <?php
     echo $mensagem; // ← exibe o alerta

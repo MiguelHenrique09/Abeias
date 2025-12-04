@@ -2,7 +2,7 @@
 <html lang="pt-BR">
 <head>
   <meta charset="utf-8">
-  <title>Admin — Abeias Burguer</title>
+  <title>Gerencia Clientes — Abeias Burguer</title>
 
   <style>
     :root {
@@ -153,11 +153,14 @@
     
    
 
-    <a href="pedidos.php" class="btn-link">
+    <a href="Pedido/gerenciaStatus.php" class="btn-link">
       Gerenciar Pedidos
   </a>
     <a href="produtos/gerenciaProdutos.php" class="btn-link">
       Gerenciar Produtos
+    </a>
+     <a href="usuarios/gerenciaCliente.php" class="btn-link">
+      Gerenciar Clientes
     </a>
   </div>
 
@@ -188,7 +191,7 @@
   });
 
   confirmExit.addEventListener('click', () => {
-    window.location.href = "login.php";
+    window.location.href = "usuarios/login.php";
   });
 </script>
 
