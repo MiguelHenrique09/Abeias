@@ -1,16 +1,19 @@
-<?php
+<?php 
 session_start();
 include("../bd/conecta.php");
-
-
 
 $idCliente = $_SESSION["usuario_id"];
 $nomeCliente = $_SESSION["usuario_email"];
 $produtos = $_POST["produto"] ?? [];
 $obs = $_POST["observacoes"] ?? "";
 $status = "confirmando";
-
 $total = 0;
+
+// Evita reenvio do formulário
+if (!empty($_SESSION['pedido_enviado'])) {
+    header("Location: pedidoFeito.php");
+    exit;
+}
 
 // Se não enviou produtos, volta
 if (!$produtos) {
@@ -50,8 +53,10 @@ mysqli_query($conexao, $sqlUp);
 $_SESSION["pedidoFeito_id"] = $idPedido;
 $_SESSION["pedidoFeito_total"] = $total;
 $_SESSION["pedidoFeito_cliente"] = $nomeCliente;
-$_SESSION["statusPedido"] = $status; 
+$_SESSION["statusPedido"] = $status;
 
+// Marca que o pedido já foi enviado
+$_SESSION['pedido_enviado'] = true;
 
 // 5) Redireciona para a página final
 header("Location: pedidoFeito.php");

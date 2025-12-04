@@ -3,7 +3,7 @@
 
 <head>
     <meta charset="utf-8">
-    <title>Cardápio -Abeias Burguer</title>
+    <title>Cardápio - Abeias Burguer</title>
     <meta content="width=device-width, initial-scale=1.0" name="viewport">
     <meta content="" name="keywords">
     <meta content="" name="description">
@@ -31,29 +31,29 @@
     <!-- Template Stylesheet -->
     <link href="style.css" rel="stylesheet">
 
+    <style>
+        .produto-titulo {
+            font-size: 1.35rem;
+            font-weight: 700;
+            color: #0a1435;
+        }
 
-    <style>.produto-titulo {
-    font-size: 1.35rem;
-    font-weight: 700;
-    color: #0a1435;
-}
+        .produto-preco {
+            font-size: 1.25rem;
+            font-weight: 700;
+            color: #ff9900 !important;
+        }
 
-.produto-preco {
-    font-size: 1.25rem;
-    font-weight: 700;
-    color: #ff9900 !important;
-}
+        .produto-desc {
+            font-size: 0.95rem;
+            line-height: 1.4rem;
+            color: #444;
+        }
 
-.produto-desc {
-    font-size: 0.95rem;
-    line-height: 1.4rem;
-    color: #444;
-}
-
-.border-bottom {
-    border-color: #ddd !important;
-}
-</style>
+        .border-bottom {
+            border-color: #ddd !important;
+        }
+    </style>
 </head>
 
 <body class="fundo">
@@ -66,13 +66,11 @@
         </div>
         <!-- Spinner End -->
 
-
         <!-- Navbar & Hero Start -->
         <div class="container-xxl position-relative p-0">
             <nav class="navbar navbar-expand-lg navbar-dark bg-dark px-4 px-lg-5 py-3 py-lg-0">
                 <a href="index.html" class="navbar-brand p-0">
                     <h1 class="text-primary m-0">Abeias Burguer</h1>
-                   
                 </a>
                 <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse">
                     <span class="fa fa-bars"></span>
@@ -81,12 +79,8 @@
                     <div class="navbar-nav ms-auto py-0 pe-4">
                         <a href="index.html" class="nav-item nav-link">Início</a>
                         <a href="cardapio.php" class="nav-item nav-link active">Cardápio</a>
-                        <div class="nav-item dropdown">
-                            
-                    </div>
                         <a href="contato.html" class="nav-item nav-link">Fale Conosco</a>
                     </div>
-
                 </div>
             </nav>
 
@@ -94,77 +88,56 @@
                 <div class="container text-center my-5 pt-5 pb-4">
                     <h1 class="display-3 text-white mb-3 animated slideInDown">Cardápio Abeias</h1>
                     <a href="usuarios/login.php" class="btn btn-primary py-2 px-4">Faça seu pedido</a>
-                    <nav aria-label="breadcrumb">
-
-                    </nav>
                 </div>
             </div>
         </div>
         <!-- Navbar & Hero End -->
 
-    <!-- itens -->
-
-       
+        <!-- Itens -->
         <?php 
-include 'bd/conecta.php';
+        include 'bd/conecta.php';
 
-// Consulta produtos
-$sql = "SELECT * FROM produto ORDER BY nome_produto ASC";
-$resultado = mysqli_query($conexao, $sql);
-?>
+        // Consulta apenas produtos ativos
+        $sql = "SELECT * FROM produto WHERE ativo = 1 ORDER BY nome_produto ASC";
+        $resultado = mysqli_query($conexao, $sql);
+        ?>
 
+        <div class="container-xxl py-5">
+            <div class="container">
+                <!-- Títulos -->
+                <div class="text-center wow fadeInUp" data-wow-delay="0.1s">
+                    <h5 class="section-title ff-secondary text-center text-primary fw-normal">Abeias Burguer</h5>
+                    <h1 class="mb-5">Nossos Produtos</h1>
+                </div>
 
-<div class="container-xxl py-5">
-    <div class="container">
+                <!-- Área dos produtos -->
+                <div class="tab-class text-center wow fadeInUp" data-wow-delay="0.1s">
+                    <div class="row g-4">
+                        <?php while ($p = mysqli_fetch_assoc($resultado)): ?>
+                            <div class="col-lg-6">
+                                <div class="d-flex align-items-center">
+                                    <div class="w-100 d-flex flex-column text-start ps-4">
+                                        <!-- NOME + PREÇO -->
+                                        <h5 class="d-flex justify-content-between border-bottom pb-2">
+                                            <span><?php echo $p['nome_produto']; ?></span>
+                                            <span class="text-primary">
+                                                R$<?php echo number_format($p['preco_atual'], 2, ',', '.'); ?>
+                                            </span>
+                                        </h5>
 
-        <!-- Títulos -->
-        <div class="text-center wow fadeInUp" data-wow-delay="0.1s">
-            <h5 class="section-title ff-secondary text-center text-primary fw-normal">Abeias Burguer</h5>
-            <h1 class="mb-5">Nossos Produtos</h1>
-        </div>
-
-        <!-- Área dos produtos -->
-        <div class="tab-class text-center wow fadeInUp" data-wow-delay="0.1s">
-            <div class="row g-4">
-
-        <?php while ($p = mysqli_fetch_assoc($resultado)): ?>
-
-    <div class="col-lg-6">
-        <div class="d-flex align-items-center">
-
-            <div class="w-100 d-flex flex-column text-start ps-4">
-
-                <!-- NOME + PREÇO -->
-                <h5 class="d-flex justify-content-between border-bottom pb-2">
-                    <span><?php echo $p['nome_produto']; ?></span>
-                    <span class="text-primary">
-                        R$<?php echo number_format($p['preco_atual'], 2, ',', '.'); ?>
-                    </span>
-                </h5>
-
-                <!-- DESCRIÇÃO -->
-                <small class="fst-italic">
-                    <?php echo $p['descricao']; ?>
-                </small>
-
-            </div>
-
-        </div>
-    </div>
-
-<?php endwhile; ?>
-
-
-
+                                        <!-- DESCRIÇÃO -->
+                                        <small class="fst-italic">
+                                            <?php echo $p['descricao']; ?>
+                                        </small>
+                                    </div>
+                                </div>
+                            </div>
+                        <?php endwhile; ?>
+                    </div>
+                </div>
             </div>
         </div>
-    </div>
-</div>
 
-
-            </div>
-        </div>
-        <!-- Menu End -->
         <!-- Footer Start -->
         <div class="container-fluid bg-dark text-light footer pt-5 mt-5 wow fadeIn" data-wow-delay="0.1s">
             <div class="container py-5">
@@ -179,26 +152,18 @@ $resultado = mysqli_query($conexao, $sql);
                         <p class="mb-2"><i class="fa fa-map-marker-alt me-3"></i>Rua dos Programadores 123, Formiga, Minas Gerais</p>
                         <p class="mb-2"><i class="fa fa-phone-alt me-3"></i>37 91234-5678</p>
                         <p class="mb-2"><i class="fa fa-envelope me-3"></i>abeiasburguer@gmail.com</p>
-                        <div class="d-flex pt-2">
-                            
-                        </div>
                     </div>
-                   
                 </div>
             </div>
             <div class="container">
                 <div class="copyright">
                     <div class="row">
                         <div class="col-md-6 text-center text-md-start mb-3 mb-md-0">
-                            &copy; <a class="border-bottom" href="#">Abeias Burguer</a>, All Right Reserved. 
-							
-							<!--/*** This template is free as long as you keep the footer author’s credit link/attribution link/backlink. If you'd like to use the template without the footer author’s credit link/attribution link/backlink, you can purchase the Credit Removal License from "https://htmlcodex.com/credit-removal". Thank you for your support. ***/-->
-							Designed By <a class="border-bottom" href="https://htmlcodex.com">HTML Codex</a><br><br>
+                            &copy; <a class="border-bottom" href="#">Abeias Burguer</a>, All Right Reserved. <br>
+                            Designed By <a class="border-bottom" href="https://htmlcodex.com">HTML Codex</a><br>
                             Distributed By <a class="border-bottom" href="https://themewagon.com" target="_blank">ThemeWagon</a>
                         </div>
-                        <div class="col-md-6 text-center text-md-end">
-                            
-                        </div>
+                        <div class="col-md-6 text-center text-md-end"></div>
                     </div>
                 </div>
             </div>
@@ -222,7 +187,5 @@ $resultado = mysqli_query($conexao, $sql);
     <!-- Template Javascript -->
     <script src="js/main.js"></script>
 
-  
 </body>
-
 </html>

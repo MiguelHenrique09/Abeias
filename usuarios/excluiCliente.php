@@ -110,39 +110,71 @@
 <div class="container">
 
 <!-- ===== MODAL ===== -->
-<div class="modal-bg">
+<div class="modal-bg" id="modalBg">
   <div class="modal-box">
     <h2>Tem certeza?</h2>
-    <p>Deseja excluir o Cliente <strong id="clienteNome"></strong>?</p>
+    <p>Deseja excluir o cliente <strong id="clienteNome"></strong>?</p>
 
     <div class="modal-buttons">
-      <form method="post" >
-        <button class="modal-btn sim" type="submit" name = "excluir">Excluir</button>
+      <form method="post">
+        <input type="hidden" id="clienteId" name="idCliente">
+
+        <!-- ESTE É O BOTÃO CORRETO -->
+        <button class="modal-btn sim" type="submit" name="excluir">
+          Excluir
+        </button>
       </form>
-       <button class="modal-btn nao" onclick="document.querySelector('.modal-bg').style.display='none'">
+
+      <button class="modal-btn nao"
+        onclick="document.querySelector('.modal-bg').style.display='none'">
         Cancelar
       </button>
     </div>
   </div>
 </div>
+
+</div>
 <?php
 include '../bd/conecta.php';
+
 if(isset($_POST["excluir"])){
-$nome = $_POST["cliente"];
 
-$sql = "DELETE FROM cliente WHERE nome_cliente = '$nome'";
+    $id = (int) $_POST["idCliente"];
 
-if(mysqli_query($conexao, $sql)){
-    echo "Cliente excluído com sucesso!";
-} else {
-    echo "Erro ao excluir.";
+    // Excluir itens dos pedidos do cliente
+    $sqlPedidos = "SELECT idPedido FROM pedido WHERE id_cliente = $id";
+    $resPedidos = mysqli_query($conexao, $sqlPedidos);
+
+    while($p = mysqli_fetch_assoc($resPedidos)){
+        $idPedido = $p["idPedido"];
+        mysqli_query($conexao, "DELETE FROM produto_pedido WHERE pedido_idPedido = $idPedido");
+    }
+
+    // Excluir pedidos
+    mysqli_query($conexao, "DELETE FROM pedido WHERE id_cliente = $id");
+
+    // Excluir cliente
+    if(mysqli_query($conexao, "DELETE FROM cliente WHERE idCliente = $id")){
+        echo "<script>alert('Cliente excluído com sucesso!'); window.location.href='gerenciaCliente.php';</script>";
+    } else {
+        echo "<script>alert('Erro ao excluir cliente');</script>";
+    }
+
+    mysqli_close($conexao);
 }
-}
-mysqli_close($conexao);
+
 ?>
 
 
 
 </div>
+<script>
+function abrirModal(id, nome){
+    document.querySelector(".modal-bg").style.display = "flex";
+    document.getElementById("clienteNome").innerText = nome;
+    document.getElementById("clienteId").value = id;
+}
+</script>
+
 </body>
 </html>

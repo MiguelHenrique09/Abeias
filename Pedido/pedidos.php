@@ -2,12 +2,10 @@
 session_start();
 include("../bd/conecta.php");
 
-
-
 $idCliente = $_SESSION["usuario_id"];
 
-// busca produtos
-$sql = "SELECT * FROM produto";
+// busca somente produtos ativos
+$sql = "SELECT * FROM produto WHERE ativo = 1";
 $produtos = mysqli_query($conexao, $sql);
 ?>
 
@@ -19,33 +17,29 @@ $produtos = mysqli_query($conexao, $sql);
     <title>Fazer Pedido</title>
     <style>
         :root {
-  --bg:#06092a;
-  --primary:#E06A24;
-  --primary-hover:#ff7f3a;
-  --text:#ffffff;
-  --card:rgba(255,255,255,0.07);
-}
+            --bg:#06092a;
+            --primary:#E06A24;
+            --primary-hover:#ff7f3a;
+            --text:#ffffff;
+            --card:rgba(255,255,255,0.07);
+        }
 
-        /* ======== ESTILO GERAL ======== */
         body {
             font-family: Arial, sans-serif;
             background-color: #0b0e27;
-            /* Fundo escuro igual na imagem */
             color: #ffffff;
             padding: 20px;
             text-align: center;
-            justify-content :center;
-            display :flex;
+            justify-content:center;
+            display:flex;
         }
 
-        /* Títulos */
         h2 {
             font-size: 32px;
             margin-bottom: 20px;
             font-weight: bold;
         }
 
-        /* ======== CAIXA DE PRODUTO ======== */
         .produto {
             background-color: #161a33;
             border: 1px solid #252b50;
@@ -61,7 +55,6 @@ $produtos = mysqli_query($conexao, $sql);
             color: #ffffff;
         }
 
-        /* Input de quantidade */
         input[type="number"] {
             padding: 6px;
             width: 80px;
@@ -73,7 +66,6 @@ $produtos = mysqli_query($conexao, $sql);
             font-size: 14px;
         }
 
-        /* ======== INPUT OBSERVAÇÕES ======== */
         input[type="text"] {
             width: 60%;
             padding: 10px;
@@ -84,12 +76,10 @@ $produtos = mysqli_query($conexao, $sql);
             color: white;
         }
 
-        /* Placeholder */
         input::placeholder {
             color: #cccccc;
         }
 
-        /* ======== BOTÃO ENVIAR ======== */
         button {
             margin-top: 25px;
             background-color: #d66b23;
@@ -106,214 +96,132 @@ $produtos = mysqli_query($conexao, $sql);
             background-color: #b8581d;
         }
 
-        /* ======== TABELA (CASO QUEIRA USAR DEPOIS) ======== */
-        table {
-            width: 80%;
-            margin: 0 auto;
-            border-collapse: collapse;
+        .back-btn{ display:inline-block; margin-bottom:25px; padding:12px 18px; background:var(--primary); color:var(--bg); border-radius:10px; text-decoration:none; font-weight:bold; transition:.2s; font-size:14px; margin-top:20px; }
+         .container{ width:100%; max-width:900px; }
+         .back-btn2{ margin-right :700px; padding: 8px 16px; background:#E06A24; color:#10183e; font-weight:bold; border-radius:8px; text-decoration:none; transition:0.3s; box-shadow:0 3px 8px rgba(0,0,0,0.25); }
+
+        /* ===== MODAL ===== */
+        .modal-bg {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.7);
+            justify-content: center;
+            align-items: center;
+            z-index: 999;
         }
 
-        th,
-        td {
-            padding: 12px;
-            border-bottom: 1px solid #2c325c;
-        }
-
-        th {
-            background-color: #1c2140;
-            color: white;
-        }
-
-        td {
+        .modal-box {
             background-color: #161a33;
+            padding: 30px;
+            border-radius: 12px;
+            width: 90%;
+            max-width: 400px;
+            text-align: center;
+            box-shadow: 0 0 10px #00000088;
         }
 
-        /* ======== BOTÕES DA TABELA ======== */
-        .btn {
-            padding: 8px 18px;
+        .modal-box h2 {
+            font-size: 18px;
+            margin-bottom: 20px;
+        }
+
+        .modal-buttons {
+            display: flex;
+            justify-content: space-between;
+            gap: 20px;
+        }
+
+        .modal-btn {
+            flex: 1;
+            padding: 10px;
             border-radius: 8px;
             border: none;
             cursor: pointer;
+            font-weight: bold;
+            transition: 0.2s;
         }
 
-        .btn-editar {
-            background-color: #d66b23;
-            color: white;
+        .modal-btn.sim {
+            background-color: #E06A24;
+            color: #fff;
         }
 
-        .btn-excluir {
-            background-color: #b8382b;
-            color: white;
-        }
-
-        .btn-editar:hover {
+        .modal-btn.sim:hover {
             background-color: #b8581d;
         }
 
-        .btn-excluir:hover {
-            background-color: #922a22;
+        .modal-btn.nao {
+            background-color: #444b7a;
+            color: white;
         }
-         /* Botão voltar */
-    .back-btn{
-      display:inline-block;
-      margin-bottom:25px;
-      padding:12px 18px;
-      background:var(--primary);
-      color:var(--bg);
-      border-radius:10px;
-      text-decoration:none;
-      font-weight:bold;
-      transition:.2s;
-     font-size:14px; margin-top:20px;
-    }
-      .container{
-      width:100%;
-      max-width:900px;
 
-    }
-    .back-btn2{
-  margin-right :700px;
-    padding: 8px 16px;
-    background:#E06A24;
-    color:#10183e;
-    font-weight:bold;
-    border-radius:8px;
-    text-decoration:none;
-    transition:0.3s;
-    box-shadow:0 3px 8px rgba(0,0,0,0.25);
-}
-
-/* ===== MODAL ===== */
-.modal-bg {
-    display: none;
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background: rgba(0,0,0,0.7);
-    justify-content: center;
-    align-items: center;
-    z-index: 999;
-}
-
-.modal-box {
-    background-color: #161a33;
-    padding: 30px;
-    border-radius: 12px;
-    width: 90%;
-    max-width: 400px;
-    text-align: center;
-    box-shadow: 0 0 10px #00000088;
-}
-
-.modal-box h2 {
-    font-size: 18px;
-    margin-bottom: 20px;
-}
-
-.modal-buttons {
-    display: flex;
-    justify-content: space-between;
-    gap: 20px;
-}
-
-.modal-btn {
-    flex: 1;
-    padding: 10px;
-    border-radius: 8px;
-    border: none;
-    cursor: pointer;
-    font-weight: bold;
-    transition: 0.2s;
-}
-
-.modal-btn.sim {
-    background-color: #E06A24;
-    color: #fff;
-}
-
-.modal-btn.sim:hover {
-    background-color: #b8581d;
-}
-
-.modal-btn.nao {
-    background-color: #444b7a;
-    color: white;
-}
-
-.modal-btn.nao:hover {
-    background-color: #30365d;
-}
-
-   </style>
+        .modal-btn.nao:hover {
+            background-color: #30365d;
+        }
+    </style>
 </head>
 
 <body>  
+    <div class ='container'>
+        <a id="openExitModal" class="back-btn2" href="#">Voltar</a>
+        <h2>Montar Pedido</h2>
 
+        <a class="back-btn" href="pedidoFeito.php">Acompanhar Pedidos</a>
 
-      <div class ='container'>
-<a id="openExitModal" class="back-btn2" href="#">Voltar</a>
-<h2>Montar Pedido</h2>
+        <form action="processa_pedido.php" method="post">
 
-<a class="back-btn" href="pedidoFeito.php" >
-    Acompanhar Pedidos
-</a>
+            <?php while ($p = mysqli_fetch_assoc($produtos)): ?>
+                <div class="produto">
+                    <strong><?= $p['nome_produto'] ?></strong><br>
+                    Preço: R$ <?= number_format($p['preco_atual'], 2, ',', '.') ?><br><br>
 
-    <form action="processa_pedido.php" method="post">
+                    Quantidade:
+                    <input type="number" name="produto[<?= $p['idProduto'] ?>]" min="0" value="0">
+                </div>
+            <?php endwhile; ?>
 
-        <?php while ($p = mysqli_fetch_assoc($produtos)): ?>
-            <div class="produto">
-                <strong><?= $p['nome_produto'] ?></strong><br>
-                Preço: R$ <?= number_format($p['preco_atual'], 2, ',', '.') ?><br><br>
+            Observações :
+            <input type="text" name="observacoes" placeholder="Faça suas observações">
 
-                Quantidade:
-                <input type="number" name="produto[<?= $p['idProduto'] ?>]" min="0" value="0">
+            <button type="submit">Enviar Pedido</button>
 
-
-
-            </div>
-        <?php endwhile; ?>
-
-        Observações :
-        <input type="text" name="observacoes" placeholder="Faça suas observações">
-
-        <button type="submit">Enviar Pedido</button>
-
-    </form>
-</div>
-<!-- Modal de confirmação -->
-<div class="modal-bg" id="exitModal">
-  <div class="modal-box">
-    <h2>Tem certeza que deseja sair?</h2>
-
-    <div class="modal-buttons">
-      <button class="modal-btn sim" id="confirmExit">Sim, sair</button>
-      <button class="modal-btn nao" id="cancelExit">Cancelar</button>
+        </form>
     </div>
-  </div>
-</div>
-<script>
-const openModal = document.getElementById('openExitModal');
-const modal = document.getElementById('exitModal');
-const cancel = document.getElementById('cancelExit');
-const confirmExit = document.getElementById('confirmExit');
 
-openModal.addEventListener('click', (e) => {
-    e.preventDefault(); // impedir que o link funcione antes do modal
-    modal.style.display = 'flex';
-});
+    <!-- Modal de confirmação -->
+    <div class="modal-bg" id="exitModal">
+      <div class="modal-box">
+        <h2>Tem certeza que deseja sair?</h2>
+        <div class="modal-buttons">
+          <button class="modal-btn sim" id="confirmExit">Sim, sair</button>
+          <button class="modal-btn nao" id="cancelExit">Cancelar</button>
+        </div>
+      </div>
+    </div>
 
-cancel.addEventListener('click', () => {
-    modal.style.display = 'none';
-});
+    <script>
+        const openModal = document.getElementById('openExitModal');
+        const modal = document.getElementById('exitModal');
+        const cancel = document.getElementById('cancelExit');
+        const confirmExit = document.getElementById('confirmExit');
 
-confirmExit.addEventListener('click', () => {
-    window.location.href = "../index.html"; // caminho correto
-});
+        openModal.addEventListener('click', (e) => {
+            e.preventDefault();
+            modal.style.display = 'flex';
+        });
 
+        cancel.addEventListener('click', () => {
+            modal.style.display = 'none';
+        });
 
-</script>
+        confirmExit.addEventListener('click', () => {
+            window.location.href = "../index.html";
+        });
+    </script>
 </body>
 
 </html>

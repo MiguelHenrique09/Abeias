@@ -1,16 +1,32 @@
+<?php
+include __DIR__ . '/../bd/conecta.php';
+
+// TRATAMENTO DO POST DO MODAL DE EDIÇÃO
+if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['idProdutoEditar'])) {
+    $id = intval($_POST['idProdutoEditar']);
+    $novoPreco = floatval(str_replace(',', '.', $_POST['novoPreco'])); // converte vírgula para ponto
+    $novaDesc = mysqli_real_escape_string($conexao, $_POST['novaDesc']);
+
+    $sqlUpdate = "UPDATE produto SET preco_atual = $novoPreco, descricao = '$novaDesc' WHERE idProduto = $id";
+    if (mysqli_query($conexao, $sqlUpdate)) {
+        echo "<script>alert('Produto atualizado com sucesso!'); window.location='gerenciaProdutos.php';</script>";
+    } else {
+        echo "<script>alert('Erro ao atualizar produto: " . mysqli_error($conexao) . "');</script>";
+    }
+}
+?>
+
 <!doctype html>
 <html lang="pt-BR">
 <head>
   <meta charset="utf-8">
   <title>Gerenciar Produtos — Abeias Burguer</title>
-
   <style>
     :root {
       --bg:#06092a;
       --primary:#E06A24;
       --primary-hover:#ff7f3a;
       --text:#ffffff;
-      --card:rgba(255,255,255,0.07);
     }
     *{margin:0;padding:0;box-sizing:border-box;}
     body{background:var(--bg);color:var(--text);font-family:Arial,sans-serif;padding:40px 20px;min-height:100vh;display:flex;justify-content:center;}
@@ -53,99 +69,65 @@
       </tr>
     </thead>
     <tbody>
-    <?php
-      include __DIR__ . '/../bd/conecta.php';
-      $sql = "SELECT nome_produto, preco_atual, descricao, idProduto FROM produto";
+      <?php
+      // Buscar apenas produtos ativos
+      $sql = "SELECT nome_produto, preco_atual, descricao, idProduto 
+              FROM produto 
+              WHERE ativo = 1";
       $resultado = mysqli_query($conexao, $sql);
 
       if ($resultado && mysqli_num_rows($resultado) > 0) {
-        while ($linha = mysqli_fetch_assoc($resultado)) {
-          $nome = $linha['nome_produto'];
-          $preco = number_format($linha['preco_atual'],2,',','.');
-          $desc = $linha['descricao'];
-          $id = $linha['idProduto'];
-          echo "<tr>
-                  <td>$nome</td>
-                  <td>R$ $preco</td>
-                  <td>$desc</td>
-                  <td><button class='btn' onclick=\"abrirModalEdicao('$id','$preco','$desc')\">Editar</button></td>
-                  <td><button class='btn' onclick=\"abrirModalExcluir('$id','$nome')\">Excluir</button></td>
-                </tr>";
-        }
+          while ($linha = mysqli_fetch_assoc($resultado)) {
+              $nome = htmlspecialchars($linha['nome_produto']);
+              $desc = htmlspecialchars($linha['descricao']);
+              $preco_formatado = number_format($linha['preco_atual'], 2, ',', '.');
+              $preco_js = number_format($linha['preco_atual'], 2, '.', '');
+              $nome_js = addslashes($nome);
+              $desc_js = addslashes($desc);
+
+              echo "<tr>
+                      <td>$nome</td>
+                      <td>R$ $preco_formatado</td>
+                      <td>$desc</td>
+                      <td><button class='btn' onclick=\"abrirModalEdicao('$linha[idProduto]','$preco_js','$desc_js')\">Editar</button></td>
+                      <td><button class='btn' onclick=\"abrirModalExcluir('$linha[idProduto]','$nome_js')\">Inativar</button></td>
+                    </tr>";
+          }
       } else {
-        echo "<tr><td colspan='5'>Nenhum produto cadastrado.</td></tr>";
+          echo "<tr><td colspan='5'>Nenhum produto cadastrado.</td></tr>";
       }
+
       mysqli_close($conexao);
-    ?>
+      ?>
     </tbody>
   </table>
+
+  <!-- MODAL EDITAR -->
+  <div class="modal-bg" id="modalEditar">
+    <div class="modal-box">
+      <h2>Editando o produto</h2>
+      <form method="POST" action="gerenciaProdutos.php">
+        <input type="hidden" name="idProdutoEditar" id="idProdutoEditar">
+        <div><input type="text" name="novoPreco" id="novoPreco" placeholder="Digite o novo preço" required></div><br>
+        <div><input type="text" name="novaDesc" id="novaDesc" placeholder="Digite a nova descrição" required></div><br>
+        <button type="submit" class="btn">Salvar</button>
+        <button type="button" class="btn" onclick="fecharModalEditar()">Cancelar</button>
+      </form>
+    </div>
+  </div>
 
   <!-- MODAL EXCLUIR -->
   <div class="modal-bg" id="modalExcluir">
     <div class="modal-box">
       <h2>Tem certeza?</h2>
       <p>Deseja excluir o produto <strong id="nomeExcluir"></strong>?</p>
-      <form method="POST" class="modal-buttons">
+      <form method="POST" action="excluiProduto.php" class="modal-buttons">
         <input type="hidden" name="idProdutoExcluir" id="idProdutoExcluir">
-        <button type="submit" name="excluir" class="modal-btn sim">Excluir</button>
+        <button type="submit" class="modal-btn sim">Excluir</button>
         <button type="button" class="modal-btn nao" onclick="fecharModalExcluir()">Cancelar</button>
       </form>
     </div>
   </div>
-
-  <!-- MODAL EDITAR -->
-  <div class="modal-bg" id="modalEditar">
-    <div class="modal-box">
-      <h2>Editando o produto</h2>
-      <form method="POST">
-        <input type="hidden" name="idProdutoEditar" id="idProdutoEditar">
-        <div><input type="text" name="novoPreco" id="novoPreco" placeholder="Digite o novo preço" required></div><br>
-        <div><input type="text" name="novaDesc" id="novaDesc" placeholder="Digite a nova descrição" required></div><br>
-        <button type="submit" name="editar" class="btn">Salvar</button>
-        <button type="button" class="btn" onclick="fecharModalEditar()">Cancelar</button>
-      </form>
-    </div>
-  </div>
-
-<?php
-include __DIR__ . '/../bd/conecta.php';
-
-// EXCLUSÃO SEGURA
-if(isset($_POST['excluir'])){
-    $id = (int)$_POST['idProdutoExcluir'];
-
-    $check = mysqli_query($conexao,"SELECT COUNT(*) AS qtd FROM produto_pedido WHERE produto_idProduto = $id");
-    $qtd = mysqli_fetch_assoc($check)['qtd'];
-
-    if($qtd>0){
-        echo "<script>alert('Este produto não pode ser excluído, pois já possui pedidos.'); window.location.href='gerenciaProdutos.php';</script>";
-        exit;
-    }
-
-    $del = mysqli_query($conexao,"DELETE FROM produto WHERE idProduto = $id");
-    if($del){
-        echo "<script>alert('Produto excluído com sucesso!'); window.location.href='gerenciaProdutos.php';</script>";
-    }else{
-        echo "<script>alert('Erro ao excluir produto!');</script>";
-    }
-}
-
-// EDIÇÃO SEGURA
-if(isset($_POST['editar'])){
-    $id = (int)$_POST['idProdutoEditar'];
-    $preco = (float)str_replace(',','.',$_POST['novoPreco']);
-    $desc = mysqli_real_escape_string($conexao,$_POST['novaDesc']);
-
-    $upd = mysqli_query($conexao,"UPDATE produto SET preco_atual = $preco, descricao = '$desc' WHERE idProduto = $id");
-    if($upd){
-        echo "<script>alert('Produto editado com sucesso!'); window.location.href='gerenciaProdutos.php';</script>";
-    }else{
-        echo "<script>alert('Erro ao editar produto!');</script>";
-    }
-}
-
-mysqli_close($conexao);
-?>
 
 <script>
 function abrirModalExcluir(id,nome){

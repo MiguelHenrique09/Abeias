@@ -209,7 +209,7 @@
 </body>
 </html>
 <?php
-        include __DIR__ . '/../bd/conecta.php';
+include __DIR__ . '/../bd/conecta.php';
 
 if(isset($_POST["inseri"])){
 
@@ -223,58 +223,64 @@ if(isset($_POST["inseri"])){
         isset($nomeProduto) && 
         isset($preco) && 
         !empty(trim($_POST['nomeProduto'])) &&
-         is_numeric($preco)
+        is_numeric($preco)
     ){
-             
 
         $nomeEscapado = mysqli_real_escape_string($conexao, $nomeProduto);
-        $checkSql = "SELECT nome_produto FROM produto WHERE nome_produto = '$nomeEscapado' LIMIT 1";
+
+        // Verifica apenas produtos ATIVOS com o mesmo nome
+        $checkSql = "SELECT nome_produto 
+                     FROM produto 
+                     WHERE nome_produto = '$nomeEscapado' 
+                     AND ativo = 1
+                     LIMIT 1";
+
         $checkResult = mysqli_query($conexao, $checkSql);
 
         if(mysqli_num_rows($checkResult) > 0){
-echo "
-<div style='
-    color:#E06A24;
-    margin:20px auto;
-    width:fit-content;
-    border-radius:8px;
-    font-size:22px;
-    font-weight:bold;
-'>
-   Esse produto já existe!
-</div>
-";
+            echo "
+            <div style='
+                color:#E06A24;
+                margin:20px auto;
+                width:fit-content;
+                border-radius:8px;
+                font-size:22px;
+                font-weight:bold;
+            '>
+               Esse produto já existe!
+            </div>
+            ";
         } else {
-            // insert no bd
-            $sql = "INSERT INTO produto (nome_produto, descricao, preco_atual)
-                    VALUES ('$nomeEscapado', '$desc', '$preco')";
+            // Inserção do produto como ativo
+            $sql = "INSERT INTO produto (nome_produto, descricao, preco_atual, ativo)
+                    VALUES ('$nomeEscapado', '$desc', '$preco', 1)";
 
             if(mysqli_query($conexao, $sql)){
-echo "
-<div style='
-    color:#E06A24;
-    margin:20px auto;
-    width:fit-content;
-    border-radius:8px;
-    font-size:22px;
-    font-weight:bold;
-'>Novo produto criado com sucesso!</div>";
+                echo "
+                <div style='
+                    color:#E06A24;
+                    margin:20px auto;
+                    width:fit-content;
+                    border-radius:8px;
+                    font-size:22px;
+                    font-weight:bold;
+                '>Novo produto criado com sucesso!</div>";
+            } else {
+                echo "
+                <div style='
+                    color:#E06A24;
+                    margin:20px auto;
+                    width:fit-content;
+                    border-radius:8px;
+                    font-size:22px;
+                    font-weight:bold;
+                '>Erro ao criar o produto!</div>";
             } 
-            else {
-              echo "
-<div style='
-    color:#E06A24;
-    margin:20px auto;
-    width:fit-content;
-    border-radius:8px;
-    font-size:22px;
-    font-weight:bold;
-'>Novo produto criado com sucesso!</div>";
-            } 
-            }
         }
-
+    }
 }
 
 mysqli_close($conexao);
 ?>
+
+
