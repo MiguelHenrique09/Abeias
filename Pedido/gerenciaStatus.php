@@ -19,6 +19,7 @@
     }
 
     body{
+      background: linear-gradient(135deg, #4c5483ff, #080d2b);
       background:var(--bg);
       color:var(--text);
       font-family:Arial, sans-serif;
@@ -163,6 +164,8 @@
 
   <h1>Gerenciar Pedidos</h1>
 
+
+  
   <!-- ABAS -->
   <div class="tabs">
     

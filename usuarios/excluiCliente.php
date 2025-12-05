@@ -18,7 +18,7 @@
 
     body {
       font-family:Arial, sans-serif;
-      background:var(--bg);
+      background: linear-gradient(135deg, #4c5483ff, #080d2b);
       color:var(--text);
       display:flex;
       justify-content:center;

@@ -37,7 +37,7 @@ header("Location: ../admin.php");
 
     <style>
         body{
-            background-color: #080d2b; /* Azul bem escuro */
+            background: linear-gradient(135deg, #4c5483ff, #080d2b);
             color: #fff;
             font-family: 'Poppins', sans-serif;
             min-height: 100vh;

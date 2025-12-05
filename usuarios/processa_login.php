@@ -12,7 +12,7 @@ $admins = [
 // ====================
 // CONEXÃO COM BANCO
 // ====================
-$conn = new mysqli("localhost", "root", "Mhs2009.", "cardapiovirtual");
+$conn = new mysqli("localhost", "root", "root", "cardapiovirtual");
 if ($conn->connect_error) {
     die("Erro na conexão: " . $conn->connect_error);
 }

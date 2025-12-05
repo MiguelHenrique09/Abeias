@@ -61,7 +61,7 @@
     }
 
     body{
-      background:var(--bg);
+      background: linear-gradient(135deg, #4c5483ff, #080d2b);
       color:var(--text);
       font-family:Arial, sans-serif;
       padding:40px 20px;

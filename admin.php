@@ -20,7 +20,7 @@
 
     body {
       font-family:Arial, sans-serif;
-      background:var(--bg);
+      background: linear-gradient(135deg, #4c5483ff, #080d2b);
       color:var(--text);
       height:100vh;
       width:100vw;
@@ -161,6 +161,9 @@
     </a>
      <a href="usuarios/gerenciaCliente.php" class="btn-link">
       Gerenciar Clientes
+    </a>
+     <a href="Pedido/consultaPedidos.php" class="btn-link">
+      Consultar Pedidos
     </a>
   </div>
 

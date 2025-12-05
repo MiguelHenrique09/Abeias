@@ -26,7 +26,7 @@ $produtos = mysqli_query($conexao, $sql);
 
         body {
             font-family: Arial, sans-serif;
-            background-color: #0b0e27;
+            background: linear-gradient(135deg, #4c5483ff, #080d2b);
             color: #ffffff;
             padding: 20px;
             text-align: center;

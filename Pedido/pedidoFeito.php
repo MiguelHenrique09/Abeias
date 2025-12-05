@@ -40,7 +40,7 @@ mysqli_close($conexao);
 <style>
     body {
         font-family: Arial, sans-serif;
-        background-color: #0b0e27;
+        background: linear-gradient(135deg, #4c5483ff, #080d2b);
         color: #ffffff;
         text-align: center;
         padding-top: 40px;
